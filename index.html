@@ -27,16 +27,11 @@
       transition: transform 0.5s;
     }
 
-    .amigo, .paulo {
+    .amigo {
       font-size: 1.8em;
       padding: 10px 15px;
       border-radius: 10px;
       transition: transform 0.5s;
-    }
-
-    .amigo {
-      color: #ff9800;
-      animation: pulse 2s infinite;
     }
 
     .paulo {
@@ -132,6 +127,30 @@
       from { transform: rotate(-10deg); }
       to { transform: rotate(10deg); }
     }
+
+    /* Animação do coração */
+    .coracao {
+      font-size: 3em;
+      color: #ff4081;
+      animation: coração 1s ease-out;
+      cursor: pointer;
+    }
+
+    @keyframes coração {
+      0% { transform: scale(0); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .coracao-aberto {
+      transform: scale(1.2);
+    }
+
+    .nome-paulo {
+      font-size: 2em;
+      color: #ff9800;
+      margin-top: 10px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -142,7 +161,7 @@
     <div class="amigo">Isaque 💛</div>
     <div class="amigo">Bruno 💛</div>
     <div class="amigo">Lucas 💛</div>
-    <div class="paulo" id="paulo">Paulo (sozinho 😢)</div>
+    <div class="paulo" id="paulo">Paulo (sozinho 😭)</div>
   </div>
 
   <div class="botoes">
@@ -161,8 +180,8 @@
 
   <div class="resposta" id="resposta"></div>
 
-  <audio id="yay" src="yay.mp3"></audio>
-  <audio id="nope" src="nope.mp3"></audio>
+  <!-- Espaço para o coração -->
+  <div id="coracao" class="coracao"></div>
 
   <script>
     const paulo = document.getElementById('paulo');
@@ -175,9 +194,8 @@
     const piadaBtn = document.getElementById('piadaBtn');
     const dancarBtn = document.getElementById('dancarBtn');
 
-    const yaySound = document.getElementById('yay');
-    const nopeSound = document.getElementById('nope');
     const resposta = document.getElementById('resposta');
+    const coracao = document.getElementById('coracao');
 
     const respostasPaulo = [
       "Claro, mas só se o Bruno for junto.",
@@ -198,9 +216,7 @@
     tentarBtn.addEventListener('click', () => {
       grupo.style.transform = 'translateX(-50px)';
       paulo.style.transform = 'translateX(-50px)';
-      nopeSound.play();
       resposta.textContent = '';
-
       setTimeout(() => {
         grupo.style.transform = 'translateX(0)';
         paulo.style.transform = 'translateX(0)';
@@ -210,14 +226,13 @@
     aceitarBtn.addEventListener('click', () => {
       paulo.classList.add('in-group');
       paulo.textContent = 'Paulo 💛';
-      yaySound.play();
-      criarConfetes();
+      criarCoracao();
       resposta.textContent = '';
     });
 
     removerBtn.addEventListener('click', () => {
       paulo.classList.remove('in-group');
-      paulo.textContent = 'Paulo (sozinho 😢)';
+      paulo.textContent = 'Paulo (sozinho 😭)';
       resposta.textContent = '';
     });
 
@@ -240,16 +255,15 @@
       }, 3000);
     });
 
-    function criarConfetes() {
-      for (let i = 0; i < 30; i++) {
-        const confete = document.createElement('div');
-        confete.classList.add('confete');
-        confete.style.left = Math.random() * 100 + 'vw';
-        confete.style.backgroundColor = ['gold', 'pink', 'lightblue', 'orange'][Math.floor(Math.random() * 4)];
-        confete.style.animationDuration = (2 + Math.random() * 2) + 's';
-        document.body.appendChild(confete);
-        setTimeout(() => confete.remove(), 4000);
-      }
+    function criarCoracao() {
+      coracao.innerHTML = '💖';
+      coracao.classList.add('coracao-aberto');
+      setTimeout(() => {
+        const nomePaulo = document.createElement('div');
+        nomePaulo.classList.add('nome-paulo');
+        nomePaulo.textContent = 'Paulo 💛';
+        coracao.appendChild(nomePaulo);
+      }, 1000);
     }
   </script>
 </body>
